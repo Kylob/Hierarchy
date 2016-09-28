@@ -2,7 +2,6 @@
 
 namespace BootPress\Tests;
 
-use BootPress\Page\Component as Page;
 use BootPress\Database\Component as Database;
 use BootPress\Hierarchy\Component as Hierarchy;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,12 +10,6 @@ class HierarchyTest extends \PHPUnit_Framework_TestCase
 {
     protected static $db;
     protected static $hier;
-
-    public static function setUpBeforeClass()
-    {
-        $request = Request::create('http://website.com/');
-        Page::html(array('dir' => __DIR__.'/page', 'suffix' => '.html'), $request, 'overthrow');
-    }
 
     public function testConstructMethod()
     {

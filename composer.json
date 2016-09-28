@@ -14,7 +14,6 @@
         "bootpress/database": "^1.0"
     },
     "require-dev": {
-        "bootpress/page": "^1.0",
         "phpunit/phpunit": "^4.0",
         "friendsofphp/php-cs-fixer": "^1.0",
         "squizlabs/php_codesniffer": "^2.5"
