@@ -151,7 +151,7 @@ class Component
     }
 
     /**
-     * Get the id a given path.
+     * Get the id of a given path.
      * 
      * @param string $field  ``$this->table``'s column name.
      * @param array  $values The ``$field`` values to drill down.

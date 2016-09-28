@@ -81,7 +81,7 @@ $hier->refresh(); // don't forget to do this!
 You just removed "Apple in California", and everything associated with them.
 
 ```php
-// Get the id a given path
+// Get the id of a given path
 echo $hier->id('name', array('Electronics', 'Portable Electronics', 'CD Players')); // 9
 
 // Retrieve a single path
