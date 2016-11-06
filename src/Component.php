@@ -25,19 +25,21 @@ class Component
     private $update = array();
 
     /**
-     * The $db $table must have the following fields:.
+     * The **$db** **$table** must have the following fields:
      *
-     * - $id => 'INTEGER PRIMARY KEY'
-     * - 'parent' => 'INTEGER NOT NULL DEFAULT 0'
-     * - 'level' => 'INTEGER NOT NULL DEFAULT 0'
-     * - 'lft' => 'INTEGER NOT NULL DEFAULT 0'
-     * - 'rgt' => 'INTEGER NOT NULL DEFAULT 0'
+     * - **$id** => 'INTEGER PRIMARY KEY',
+     * - '**parent**' => 'INTEGER NOT NULL DEFAULT 0',
+     * - '**level**' => 'INTEGER NOT NULL DEFAULT 0',
+     * - '**lft**' => 'INTEGER NOT NULL DEFAULT 0',
+     * - '**rgt**' => 'INTEGER NOT NULL DEFAULT 0',
      *
-     * All you need to worry about is the $id and 'parent'.  This class will take care of the rest.
-     * 
+     * All you need to worry about is the **$id** and '**parent**'.  This class will take care of the rest.
+     *
      * @param object $db    A BootPress\Database\Component instance.
-     * @param string $table The name of the database's hierarchical table.
-     * @param string $id    The database table's id column.
+     * @param string $table The name of the database's hierarchical table.  Saved in the ``$hier->table`` private property.
+     * @param string $id    The database table's id column.  Saved in the ``$hier->id`` private property.
+     *
+     * @example
      *
      * ```php
      * use BootPress\Database\Component as Database;
@@ -74,8 +76,6 @@ class Component
      * }
      * $hier = new Hierarchy($db, 'category', 'id');
      * ```
-     *
-     * @link http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
      */
     public function __construct(Database $db, $table, $id = 'id')
     {
@@ -85,9 +85,11 @@ class Component
     }
 
     /**
-     * Refreshes the database table's 'level', 'lft', and 'rgt' columns.  This should be called any time you insert into or delete from your hierarchical table.
-     * 
-     * @param string $order The table's field name you would like to base the order on.  The default is to use ``$this->id``.
+     * Refreshes the database table's '**level**', '**lft**', and '**rgt**' columns.  This should be called any time you insert into, or delete from your hierarchical table.
+     *
+     * @param string $order The table's field name you would like to base the order on.  The default is to use the ``$hier->id`` field.
+     *
+     * @example
      *
      * ```php
      * $hier->refresh();
@@ -124,10 +126,12 @@ class Component
 
     /**
      * Delete a node and all of it's children from your hierarchical table.
-     * 
-     * @param int $id ``$this->id`` of the node.
-     * 
-     * @return bool|array False if nothing was affected, or an array of deleted ids.
+     *
+     * @param int $id The ``$hier->id`` of the node.
+     *
+     * @return bool|array Either ``false`` if nothing was affected, or an ``array()`` of deleted ids.
+     *
+     * @example
      *
      * ```php
      * print_r($hier->delete(11)); // array(11, 12, 13, 14, 15)
@@ -152,11 +156,13 @@ class Component
 
     /**
      * Get the id of a given path.
-     * 
-     * @param string $field  ``$this->table``'s column name.
-     * @param array  $values The ``$field`` values to drill down.
-     * 
-     * @return bool|int False if no result found, or an id.
+     *
+     * @param string $field  The ``$hier->table``'s column name.
+     * @param array  $values The **$field** values to drill down.
+     *
+     * @return bool|int Either ``false`` if no result found, or an ``integer`` id.
+     *
+     * @example
      *
      * ```php
      * echo $hier->id('name', array('Electronics')); // 1
@@ -180,11 +186,13 @@ class Component
     /**
      * Retrieve a single path.
      *
-     * @param string       $field  ``$this->table``'s column name.
-     * @param string       $value  The ``$field``'s value.
-     * @param string|array $column The column(s) that you want to return.  The default is the $field you specify.
-     * 
-     * @return array An array of id (keys) and column (values) in order.
+     * @param string       $field  The ``$hier->table``'s column name.
+     * @param string       $value  Of the **$field**.
+     * @param string|array $column The column(s) that you want to return.  The default is the **$field** you specify.
+     *
+     * @return array An array of ``$hier->id`` (keys) and **$column** (values).
+     *
+     * @example
      *
      * ```php
      * var_export($hier->path('name', 'Flash'));
@@ -228,11 +236,13 @@ class Component
 
     /**
      * Find the immediate subordinates of a node ie. no grand children.
-     * 
-     * @param int          $id     ``$this->id`` of the node.
+     *
+     * @param int          $id     The ``$hier->id`` of the node.
      * @param string|array $column The column(s) that you want to return.
-     * 
-     * @return array An array of id (keys) and column (values) in order.
+     *
+     * @return array An array of ``$hier->id`` (keys) and **$column** (values).
+     *
+     * @example
      *
      * ```php
      * var_export($hier->children(6, 'name'));
@@ -241,7 +251,7 @@ class Component
      *     9 => 'CD Players',
      *     10 => '2 Way Radios',
      * )
-     * 
+     *
      * var_export($hier->children(6, array('level', 'name')));
      * array(
      *     7 => array('level' => 2, 'name' => 'MP3 Players'),
@@ -266,11 +276,13 @@ class Component
 
     /**
      * Find all the nodes at a given level.
-     * 
+     *
      * @param int          $depth  The level you want, starting at 0.
      * @param string|array $column A single column string, or an array of columns that you want to return.
-     * 
-     * @return array An array of id (keys) and column (values) in order.
+     *
+     * @return array An array of ``$hier->id`` (keys) and **$column** (values).
+     *
+     * @example
      *
      * ```php
      * var_export($hier->level(2, array('parent', 'name')));
@@ -300,11 +312,13 @@ class Component
 
     /**
      * Aggregate the total records in a table for each tree node.
-     * 
+     *
      * @param string $table The database table to aggregate the records from.
-     * @param string $match The $table column that corresponds with ``$this->id``.
+     * @param string $match The **$table** column that corresponds with the ``$hier->id``.
      * @param int    $id    A specific node you may be looking for.
      * 
+     * @example
+     *
      * @return int|array The total count(s).
      *
      * ```php
@@ -382,13 +396,15 @@ class Component
 
     /**
      * Retrieve a full tree, or any parts thereof.
-     * 
-     * @param string|array $column The column(s) that you want to return.
-     * @param string       $field  ``$this->table``'s column name, or the $having depth below if not specifying a $value.
-     * @param string       $value  The ``$field``'s value.  The depths will be relative to this now.
-     * @param string       $having The desired depth of the nodes eg. 'depth > 1'
      *
-     * @return array An array of id (keys) and column (values) including 'parent' and 'depth' info.
+     * @param string|array $column The column(s) that you want to return.
+     * @param string       $field  The ``$hier->table``'s column name, or the **$having** depth below if not specifying a $value.
+     * @param string       $value  Of the **$field**.  The depths will be relative to this now.
+     * @param string       $having The desired depth of the nodes eg. '**depth > 1**'
+     *
+     * @return array An array of ``$hier->id`` (keys) and **$column** (values), including '**parent**' and '**depth**' info.
+     *
+     * @example
      *
      * ```php
      * var_export($hier->tree('name'));
@@ -404,7 +420,7 @@ class Component
      *     9 => array('name' => 'CD Players', 'parent' => 6, 'depth' => 2),
      *     10 => array('name' => '2 Way Radios', 'parent' => 6, 'depth' => 2),
      * )
-     * 
+     *
      * var_export($hier->tree('name', 'id', 6));
      * array(
      *     6 => array('name' => 'Portable Electronics', 'parent' => 1, 'depth' => 0),
@@ -413,7 +429,7 @@ class Component
      *     9 => array('name' => 'CD Players', 'parent' => 6, 'depth' => 1),
      *     10 => array('name' => '2 Way Radios', 'parent' => 6, 'depth' => 1),
      * )
-     * 
+     *
      * var_export($hier->tree('name', 'depth > 2',));
      * array(
      *     8 => array('name' => 'Flash', 'parent' => 7, 'depth' => 3),
@@ -466,10 +482,12 @@ class Component
 
     /**
      * Create a multi-dimensional array using the first value of each tree array.
-     * 
+     *
      * @param array $tree As retrieved from ``$this->tree()``.
-     * 
+     *
      * @return array
+     *
+     * @example
      *
      * ```php
      * $tree = $hier->tree('name', 'id', 6);
@@ -504,10 +522,12 @@ class Component
 
     /**
      * Create a multi-dimensional array using ``$this->id``'s id of each tree array.
-     * 
+     *
      * @param array $tree As retrieved from ``$this->tree()``.
-     * 
+     *
      * @return array
+     *
+     * @example
      *
      * ```php
      * $tree = $hier->tree('name', 'id', 6);
@@ -548,10 +568,12 @@ class Component
 
     /**
      * Flatten a nested tree.
-     * 
+     *
      * @param array $nest As retrieved from ``$this->nestify()``.
-     * 
+     *
      * @return array
+     *
+     * @example
      *
      * ```php
      * $tree = $hier->tree('name', 'id', 6);
