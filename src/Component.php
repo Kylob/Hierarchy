@@ -22,7 +22,7 @@ class Component
     private $parents = array();
 
     /** @var array Used when ``$this->traverse()``ing paths to update database. */
-    public $update = array();
+    private $update = array();
 
     /**
      * The $db $table must have the following fields:.
