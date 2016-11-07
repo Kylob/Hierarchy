@@ -317,9 +317,9 @@ class Component
      * @param string $match The **$table** column that corresponds with the ``$hier->id``.
      * @param int    $id    A specific node you may be looking for.
      * 
-     * @example
-     *
      * @return int|array The total count(s).
+     *
+     * @example
      *
      * ```php
      * $db->exec(array(
